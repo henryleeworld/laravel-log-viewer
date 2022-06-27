@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +13,4 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-$router->group(['namespace' => '\Rap2hpoutre\LaravelLogViewer'], function() use ($router) {
-    $router->get('logs', 'LogViewerController@index');
-});
+Route::get('logs', [LogViewerController::class, 'index']);

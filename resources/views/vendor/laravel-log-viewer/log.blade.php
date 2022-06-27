@@ -4,12 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="robots" content="noindex, nofollow">
-  <title>{{ trans('frontend.log.title') }}</title>
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+  <title>Laravel log viewer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
   <style>
     body {
       padding: 25px;
@@ -66,6 +63,10 @@
     .nowrap {
       white-space: nowrap;
     }
+    .list-group {
+            padding: 5px;
+        }
+
 
 
 
@@ -180,19 +181,10 @@
       <div class="list-group div-scroll">
         @foreach($folders as $folder)
           <div class="list-group-item">
-            <a href="?f={{ \Illuminate\Support\Facades\Crypt::encrypt($folder) }}">
-              <span class="fa fa-folder"></span> {{$folder}}
-            </a>
-            @if ($current_folder == $folder)
-              <div class="list-group folder">
-                @foreach($folder_files as $file)
-                  <a href="?l={{ \Illuminate\Support\Facades\Crypt::encrypt($file) }}&f={{ \Illuminate\Support\Facades\Crypt::encrypt($folder) }}"
-                    class="list-group-item @if ($current_file == $file) llv-active @endif">
-                    {{$file}}
-                  </a>
-                @endforeach
-              </div>
-            @endif
+            <?php
+            \Rap2hpoutre\LaravelLogViewer\LaravelLogViewer::DirectoryTreeStructure( $storage_path, $structure );
+            ?>
+
           </div>
         @endforeach
         @foreach($files as $file)
@@ -282,17 +274,13 @@
   </div>
 </div>
 <!-- jQuery for Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- FontAwesome -->
-<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
 <!-- Datatables -->
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
 
@@ -319,6 +307,9 @@
       $('#' + $(this).data('display')).toggle();
     });
     $('#table-log').DataTable({
+      "language": {
+        "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/zh-HANT.json"
+      },
       "order": [$('#table-log').data('orderingIndex'), 'desc'],
       "stateSave": true,
       "stateSaveCallback": function (settings, data) {
@@ -331,7 +322,7 @@
       }
     });
     $('#delete-log, #clean-log, #delete-all-log').click(function () {
-      return confirm({{ trans('frontend.log.statement.are_you_sure') }});
+      return confirm('{{ trans("frontend.log.statement.are_you_sure") }}');
     });
   });
 </script>
