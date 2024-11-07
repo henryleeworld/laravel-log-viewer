@@ -1,4 +1,4 @@
-# Laravel 10 日誌觀察器
+# Laravel 11 日誌觀察器
 
 引入 rap2hpoutre 的 laravel-log-viewer 套件來擴增日誌觀察器以瀏覽日誌紀錄，然而密密麻麻的日誌，卻隱含著客戶來自何方，以及是在什麼時候使用服務，甚至可以了解客戶最喜歡存取什麼服務，或是在使用什麼服務的時候最容易導致錯誤。透過了解使用者，改善用戶體驗來增加客戶數量以及停留時間，進而為網站服務帶來更多收益。
 
@@ -22,5 +22,5 @@ $ php artisan key:generate
 ----
 
 ## 畫面截圖
-![](https://i.imgur.com/uNEKZIm.png)
-> 日誌紀錄提供定義在 RFC 5424 的八個級別：debug、info、notice、warning、error、critical、alert 和 emergency，日誌紀錄只會紀錄比自身設定的等級還高的訊息
+![](https://i.imgur.com/akhZyQf.png)
+> 日誌紀錄提供定義在 RFC 5424 的八個級別，日誌紀錄只會紀錄比自身設定的等級還高的訊息

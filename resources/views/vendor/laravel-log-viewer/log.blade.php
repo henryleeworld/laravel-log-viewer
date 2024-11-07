@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="robots" content="noindex, nofollow">
-  <title>Laravel log viewer</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-Z/def5z5u2aR89OuzYcxmDJ0Bnd5V1cKqBEbvLOiUNWdg9PQeXVvXLI90SE4QOHGlfLqUnDNVAYyZi8UwUTmWQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+  <title>{{ __('Log viewer') }}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap5.min.css">
   <style>
     body {
       padding: 25px;
@@ -170,12 +170,12 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col sidebar mb-3">
-      <h1><i class="fa fa-calendar" aria-hidden="true"></i> {{ trans('frontend.log.title') }}</h1>
-      <p class="text-muted"><i>{{ trans('frontend.log.author') }}</i></p>
+      <h1><i class="fa fa-calendar" aria-hidden="true"></i> {{ __('Log viewer') }}</h1>
+      <p class="text-muted"><i>{{ __('Henry Lee') }}</i></p>
 
       <div class="custom-control custom-switch" style="padding-bottom:20px;">
         <input type="checkbox" class="custom-control-input" id="darkSwitch">
-        <label class="custom-control-label" for="darkSwitch" style="margin-top: 6px;">{{ trans('frontend.log.content.dark_mode') }}</label>
+        <label class="custom-control-label" for="darkSwitch" style="margin-top: 6px;">{{ __('Dark Mode') }}</label>
       </div>
 
       <div class="list-group div-scroll">
@@ -198,20 +198,20 @@
     <div class="col-10 table-container">
       @if ($logs === null)
         <div>
-          {{ trans('frontend.log.statement.log_file_is_larger_than_50m') }}
+          {{ __('Log file >50M, please download it.') }}
         </div>
       @else
         <table id="table-log" class="table table-striped" data-ordering-index="{{ $standardFormat ? 2 : 0 }}">
           <thead>
           <tr>
             @if ($standardFormat)
-              <th>{{ trans('frontend.log.content.level') }}</th>
-              <th>{{ trans('frontend.log.content.context') }}</th>
-              <th>{{ trans('frontend.log.content.date') }}</th>
+              <th>{{ __('Level') }}</th>
+              <th>{{ __('Context') }}</th>
+              <th>{{ __('Date') }}</th>
             @else
-              <th>{{ trans('frontend.log.content.line_number') }}</th>
+              <th>{{ __('Line number') }}</th>
             @endif
-            <th>{{ trans('frontend.log.content.title') }}</th>
+            <th>{{ __('Content') }}</th>
           </tr>
           </thead>
           <tbody>
@@ -220,7 +220,7 @@
             <tr data-display="stack{{{$key}}}">
               @if ($standardFormat)
                 <td class="nowrap text-{{{$log['level_class']}}}">
-                  <span class="fa fa-{{{$log['level_img']}}}" aria-hidden="true"></span>&nbsp;&nbsp;{{$log['level']}}
+                  <span class="fa fa-{{{$log['level_img']}}}" aria-hidden="true"></span>&nbsp;&nbsp;{{ __($log['level']) }}
                 </td>
                 <td class="text">{{$log['context']}}</td>
               @endif
@@ -252,20 +252,20 @@
       <div class="p-3">
         @if($current_file)
           <a href="?dl={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
-            <span class="fa fa-download"></span> {{ trans('frontend.log.content.download_file') }}
+            <span class="fa fa-download"></span> {{ __('Download file') }}
           </a>
           -
           <a id="clean-log" href="?clean={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
-            <span class="fa fa-sync"></span> {{ trans('frontend.log.content.clean_file') }}
+            <span class="fa fa-sync"></span> {{ __('Clean file') }}
           </a>
           -
           <a id="delete-log" href="?del={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
-            <span class="fa fa-trash"></span> {{ trans('frontend.log.content.delete_file') }}
+            <span class="fa fa-trash"></span> {{ __('Delete file') }}
           </a>
           @if(count($files) > 1)
             -
             <a id="delete-all-log" href="?delall=true{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
-              <span class="fa fa-trash-alt"></span> {{ trans('frontend.log.content.delete_all_files') }}
+              <span class="fa fa-trash-alt"></span> {{ __('Delete all files') }}
             </a>
           @endif
         @endif
@@ -274,13 +274,13 @@
   </div>
 </div>
 <!-- jQuery for Bootstrap -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.1/js/bootstrap.min.js" integrity="sha512-fHY2UiQlipUq0dEabSM4s+phmn+bcxSYzXP4vAXItBvBHU7zAM/mkhCZjtBEIJexhOMzZbgFlPLuErlJF2b+0g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- FontAwesome -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" defer/>
 <!-- Datatables -->
-<script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.11/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
 
@@ -308,7 +308,7 @@
     });
     $('#table-log').DataTable({
       "language": {
-        "url": "https://cdn.datatables.net/plug-ins/1.13.5/i18n/zh-HANT.json"
+        "url": {{ app()->getLocale() == 'zh_TW' }} ? "https://cdn.datatables.net/plug-ins/1.13.10/i18n/zh-HANT.json" : "https://cdn.datatables.net/plug-ins/1.13.10/i18n/en-GB.json"
       },
       "order": [$('#table-log').data('orderingIndex'), 'desc'],
       "stateSave": true,
@@ -322,7 +322,7 @@
       }
     });
     $('#delete-log, #clean-log, #delete-all-log').click(function () {
-      return confirm('{{ trans("frontend.log.statement.are_you_sure") }}');
+      return confirm('{{ __('Are you sure?') }}');
     });
   });
 </script>
